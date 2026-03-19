@@ -23,7 +23,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const appId = 'epo-english-studio';
-const apiKey = process.env.GEMINI_API_KEY; 
+const apiKey = process.env.REACT_APP_GEMINI_API_KEY; 
 
 // --- Exponential Backoff Retry (Fail-Fast for 4xx errors) ---
 const fetchWithRetry = async (url, options, maxRetries = 5) => {
