@@ -248,7 +248,7 @@ const App = () => {
     if (totalSeconds > 0 && totalSeconds % 10 === 0) {
       updateDailyLogToCloud(10);
     }
-  }, [totalSeconds]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [totalSeconds]);
 
   // --- 4. Evolution Logic ---
   const currentStageCalculated = useMemo(() => {
