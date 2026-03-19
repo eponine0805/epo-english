@@ -48,7 +48,7 @@ const fetchWithRetry = async (url, options, maxRetries = 5) => {
   }
 };
 
-// --- Evolution Data (全39形態を網羅・NGワード排除済) ---
+// --- Evolution Data (全39形態を網羅) ---
 const EVOLUTION_LIST = [
   { id: 'egg', phase: 1, name: 'はじまりの卵', rarity: 'Common', prompt: 'A mystical glowing fantasy egg, translucent with internal nebula colors, anime style, pure white background.' },
   { id: 'chibi_logic', phase: 2, name: 'ちび論理', rarity: 'Common', prompt: 'Cute chibi anime fairy girl, blue dress, holding a tiny book, pure white background.' },
@@ -248,7 +248,7 @@ const App = () => {
     if (totalSeconds > 0 && totalSeconds % 10 === 0) {
       updateDailyLogToCloud(10);
     }
-  }, [totalSeconds]);
+  }, [totalSeconds]); 
 
   // --- 4. Evolution Logic ---
   const currentStageCalculated = useMemo(() => {
@@ -324,7 +324,7 @@ const App = () => {
     return () => clearInterval(int);
   }, [isImgLoading]);
 
-  // Image Management (imagen-3.0-generate-001に修正)
+  // Image Management (imagen-3.0-generate-001)
   useEffect(() => {
     let isMounted = true;
     const handleVisual = async () => {
@@ -374,7 +374,7 @@ const App = () => {
     } catch (e) { return null; }
   };
 
-  // Generate Content (gemini-1.5-flashに修正)
+  // Generate Content (gemini-1.5-flash)
   const generateContent = async () => {
     if(!apiKey) { setErrorMsg("APIキーが設定されていません。Netlifyの設定を確認してください。"); return; }
     setIsLoading(true); setErrorMsg(null); setPronunciationScore(null); setRecordedUrl(null);
@@ -437,7 +437,7 @@ const App = () => {
     } catch (e) { setErrorMsg(`エラー: ${e.message}`); console.error(e); } finally { setIsLoading(false); }
   };
 
-  // Score Pronunciation (gemini-1.5-flashに修正)
+  // Score Pronunciation (gemini-1.5-flash)
   const scorePronunciation = async () => {
     if (!recordedUrl || !content.english) return;
     setIsScoring(true); setPronunciationScore(null);
