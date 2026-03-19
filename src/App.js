@@ -271,6 +271,7 @@ const App = () => {
     return () => clearInterval(int);
   }, [isImgLoading]);
 
+  // --- 【修正ここから】画像生成のモデル名を一般公開版に変更 ---
   useEffect(() => {
     let isMounted = true;
     const handleVisual = async () => {
@@ -279,7 +280,8 @@ const App = () => {
       generatingIdRef.current = currentCharacter.id;
       setIsImgLoading(true);
       try {
-        const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:predict?key=${apiKey}`, {
+        // imagen-3.0-generate-001 から imagen-3.0-alpha に修正（より安定）
+        const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-alpha:predict?key=${apiKey}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ instances: [{ prompt: currentCharacter.prompt }], parameters: { sampleCount: 1 } })
@@ -298,9 +300,11 @@ const App = () => {
     handleVisual();
     return () => { isMounted = false; };
   }, [currentCharacter.id, user, isDataLoaded, characterAlbum]);
+  // --- 【修正ここまで】 ---
 
   const robustParse = (text) => { try { const match = text.match(/\{[\s\S]*\}/); return JSON.parse(match ? match[0] : text); } catch (e) { return null; } };
 
+  // --- 【修正ここから】文章生成のモデル名を安定版に変更 ---
   const generateContent = async () => {
     setIsLoading(true); setErrorMsg(null); setPronunciationScore(null); setRecordedUrl(null);
     const newStats = { ...genreStats, [genre]: (genreStats[genre] || 0) + 1 };
@@ -310,6 +314,7 @@ const App = () => {
     const prompt = `Act as an expert English teacher for Epo-chan. Level: TOEIC ${toeicScore}. Genre: ${genre}. Length: ${lengthInstruction}. Output STRICTLY in JSON: {"english": "...", "japanese": "...", "context": "..."}`;
 
     try {
+      // gemini-2.5-flash-preview... から gemini-1.5-flash に修正（安定）
       const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -338,6 +343,7 @@ const App = () => {
       }
     } catch (e) { setErrorMsg(`エラー: ${e.message}`); } finally { setIsLoading(false); }
   };
+  // --- 【修正ここまで】 ---
 
   const scorePronunciation = async () => {
     if (!recordedUrl || !content.english) return;
