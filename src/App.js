@@ -341,7 +341,7 @@ const App = () => {
       generatingIdRef.current = currentCharacter.id;
       setIsImgLoading(true);
       try {
-        const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`, {
+        const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:predict?key=${apiKey}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ instances: [{ prompt: currentCharacter.prompt }], parameters: { sampleCount: 1 } })
@@ -436,7 +436,7 @@ const App = () => {
       const result = robustParse(data.candidates[0].content.parts[0].text);
       if (result) {
         setContent(result); setShowTranslation(false); setIsSettingsOpen(false);
-        const ttsRes = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
+        const ttsRes = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ contents: [{ parts: [{ text: result.english }] }], generationConfig: { responseModalities: ["AUDIO"], speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Kore" } } } } })
@@ -474,7 +474,7 @@ const App = () => {
       const mimeType = blob.type ? blob.type.split(';')[0] : "audio/webm";
       const prompt = `Evaluate the English pronunciation of the following audio based on this exact text: "${content.english}". Return ONLY an integer score from 0 to 100 representing the pronunciation quality. Do not write anything else.`;
 
-      const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+      const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType: mimeType, data: base64Audio } }] }] })
