@@ -397,7 +397,7 @@ const App = () => {
     {"english": "<English text here>", "japanese": "<Natural Japanese translation here>", "context": "<Brief context, source, or situation>"}`;
 
     try {
-      const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+      const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-tts:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", temperature: 0.95 } })
@@ -444,7 +444,7 @@ const App = () => {
       const mimeType = blob.type ? blob.type.split(';')[0] : "audio/webm";
       const prompt = `Evaluate the English pronunciation of the following audio based on this exact text: "${content.english}". Return ONLY an integer score from 0 to 100 representing the pronunciation quality. Do not write anything else.`;
 
-      const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-tts:generateContent?key=${apiKey}`, {
+      const res = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contents: [{ parts: [{ text: prompt }, { inlineData: { mimeType: mimeType, data: base64Audio } }] }] })
